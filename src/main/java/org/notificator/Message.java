@@ -1,4 +1,4 @@
-package org.example;
+package org.notificator;
 
 /**
  * Record for holding message data.

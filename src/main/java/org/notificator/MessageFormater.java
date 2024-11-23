@@ -1,4 +1,4 @@
-package org.example;
+package org.notificator;
 
 /**
  * class to format Messages for sending.

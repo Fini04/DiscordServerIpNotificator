@@ -1,4 +1,4 @@
-package org.example;
+package org.notificator;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.OutputStream;

@@ -1,4 +1,4 @@
-package org.example;
+package org.notificator;
 
 import org.junit.jupiter.api.Test;
 

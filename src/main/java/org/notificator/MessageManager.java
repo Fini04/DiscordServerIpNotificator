@@ -1,4 +1,4 @@
-package org.example;
+package org.notificator;
 
 import java.io.IOException;
 import java.util.Timer;
