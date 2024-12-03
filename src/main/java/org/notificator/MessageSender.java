@@ -2,7 +2,7 @@ package org.notificator;
 
 import javax.net.ssl.HttpsURLConnection;
 import java.io.OutputStream;
-import java.net.URL;
+import java.net.URI;
 
 /**
  * Class to send Messages
@@ -18,8 +18,8 @@ public class MessageSender {
         String formattedMessage = MessageFormater
                 .getFormatedDiscordMessage(message.title(), message.description());
         try {
-            URL url = new URL(webhook);
-            HttpsURLConnection con = (HttpsURLConnection) url.openConnection();
+            URI url = new URI(webhook);
+            HttpsURLConnection con = (HttpsURLConnection) url.toURL().openConnection();
             con.addRequestProperty("Content-Type", "application/json");
             con.setDoOutput(true);
             con.setRequestMethod("POST");
@@ -29,8 +29,10 @@ public class MessageSender {
             stream.close();
             con.getInputStream().close();
             con.disconnect();
+            System.out.println("Message send to " + webhook);
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Sending Message to " + webhook + " failed");
+            System.err.println(e.getMessage());
         }
     }
 }

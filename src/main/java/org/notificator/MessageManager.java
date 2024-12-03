@@ -33,11 +33,13 @@ public class MessageManager {
     /**
      * Constructor.
      *
-     * @param url webhook address
+     * @param webhooks webhook addresses you want to send nessages to
      * @param interval refreshing interval
      */
-    public MessageManager(String url, int interval) {
-        MessageSender.sendDiscordMessage(url, STARTUP_MESSAGE);
+    public MessageManager(String[] webhooks, int interval) {
+        for (String webhookUrl : webhooks) {
+            MessageSender.sendDiscordMessage(webhookUrl, STARTUP_MESSAGE);
+        }
 
         TimerTask ipMessage = new TimerTask() {
             public void run() {
@@ -45,15 +47,19 @@ public class MessageManager {
                 try {
                     ip = IpChecker.getIp();
                 } catch (IOException e) {
-                    throw new RuntimeException(e);
+                    System.err.println("get ip failed");
+                    ip = oldIp;
                 }
+
                 if (!oldIp.equals(ip)) {
-                    Message ipMessage = new Message(IP_MESSAGE_TITLE, ip);
-                    MessageSender.sendDiscordMessage(url, ipMessage);
                     oldIp = ip;
+                    Message ipMessage = new Message(IP_MESSAGE_TITLE, ip);
+                    for (String webhookUrl : webhooks) {
+                        MessageSender.sendDiscordMessage(webhookUrl, ipMessage);
+                    }
                 }
             }
         };
-        timer.schedule(ipMessage, 0, interval);
+        timer.schedule(ipMessage, 0, interval * 1000L);
     }
 }
